@@ -2,7 +2,7 @@
 ## Title: Reclaim
 ## Notes: Marks bag items you no longer need, so you can delete them with confidence.
 ## Author: WIKR
-## Version: 0.1.0-dev
+## Version: 1.0.0
 ## SavedVariables: ReclaimDB
 ## OptionalDeps: Baganator
 ## IconTexture: Interface\Icons\INV_Misc_Bag_10
