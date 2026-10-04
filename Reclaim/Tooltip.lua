@@ -10,4 +10,5 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
     tooltip:AddLine(" ")
     tooltip:AddLine("Reclaim: safe to delete", 0.25, 1, 0.25)
     tooltip:AddLine(reason, 0.6, 0.6, 0.6, true)
+    tooltip:AddLine(" ")
 end)
