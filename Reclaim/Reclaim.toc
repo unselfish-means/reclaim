@@ -1,0 +1,25 @@
+## Interface: 16001
+## Title: Reclaim
+## Notes: Marks bag items you no longer need, so you can delete them with confidence.
+## Author: WIKR
+## Version: 0.1.0-dev
+## SavedVariables: ReclaimDB
+## OptionalDeps: Baganator
+## IconTexture: Interface\Icons\INV_Misc_Bag_10
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
+Core.lua
+Rules.lua
+BuiltinRules.lua
+Scanner.lua
+Tooltip.lua
+BagOverlay.lua
+Badge.lua
+Panel.lua
+Minimap.lua
+Options.lua
+Slash.lua
