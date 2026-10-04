@@ -20,6 +20,7 @@ Tooltip.lua
 BagOverlay.lua
 Badge.lua
 Panel.lua
+RuleDialog.lua
 Minimap.lua
 Options.lua
 Slash.lua

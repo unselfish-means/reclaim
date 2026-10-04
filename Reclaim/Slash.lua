@@ -13,7 +13,7 @@
 local _, ns = ...
 
 local function itemName(itemID)
-    return C_Item.GetItemNameByID(itemID) or ("item " .. itemID)
+    return ns.Scanner.ItemName(itemID)
 end
 
 local commands = {}
@@ -24,9 +24,8 @@ function commands.add(rest)
         ns.Print("Couldn't add the rule: %s.", raw)
         return
     end
-    ns.db.rules[itemID] = raw
-    ns.Print("%s: %s.", itemName(itemID), ns.Rules.Describe(raw))
-    ns.Scanner.Request(0)
+    ns.SetRule(itemID, raw)
+    ns.Print("%s: %s.", itemName(itemID), ns.Scanner.Describe(raw))
 end
 
 function commands.remove(rest)
@@ -35,16 +34,15 @@ function commands.remove(rest)
         ns.Print("Give an item ID or shift-click an item.")
         return
     end
-    if ns.db.rules[itemID] then
-        ns.db.rules[itemID] = nil
-        ns.Print("%s: your rule removed.", itemName(itemID))
-    elseif ns.BuiltinRules[itemID] and ns.db.rules[itemID] == nil then
-        ns.db.rules[itemID] = false
+    local wasHidden = ns.db.rules[itemID] == false
+    local result = ns.RemoveRule(itemID)
+    if result == "removed" then
+        ns.Print("%s: %s.", itemName(itemID), wasHidden and "built-in rule restored" or "your rule removed")
+    elseif result == "hidden" then
         ns.Print("%s: built-in rule hidden.", itemName(itemID))
     else
         ns.Print("%s has no rule.", itemName(itemID))
     end
-    ns.Scanner.Request(0)
 end
 
 local function listRules(label, rules)
@@ -53,7 +51,7 @@ local function listRules(label, rules)
     table.sort(ids)
     ns.Print("%s (%d):", label, #ids)
     for _, itemID in ipairs(ids) do
-        ns.Print("  %d %s: %s", itemID, itemName(itemID), ns.Rules.Describe(rules[itemID]))
+        ns.Print("  %d %s: %s", itemID, itemName(itemID), ns.Scanner.Describe(rules[itemID]))
     end
 end
 

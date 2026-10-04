@@ -4,5 +4,5 @@
 local _, ns = ...
 
 ns.BuiltinRules = {
-    [281149] = 96139,
+    [281149] = 96139, -- Memories of Valor: The Valor Family
 }
