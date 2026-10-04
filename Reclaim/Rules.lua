@@ -64,6 +64,31 @@ function Rules.QuestIDs(...)
     return set
 end
 
+-- Builds the most compact raw rule for a list of quest IDs. Returns raw, or nil, error message.
+function Rules.Build(quests, any, account)
+    if #quests == 0 then
+        if any or account then return nil, "'any' and 'account' need at least one quest ID" end
+        return true
+    end
+    if #quests == 1 and not account then return quests[1] end
+    local raw = {}
+    for i, questID in ipairs(quests) do raw[i] = questID end
+    if any then raw.any = true end
+    if account then raw.account = true end
+    return raw
+end
+
+-- Parses quest IDs separated by spaces or commas. Returns the list, or nil, error message.
+function Rules.ParseQuestList(text)
+    local quests = {}
+    for token in (text or ""):gsub(",", " "):gmatch("%S+") do
+        local questID = tonumber(token)
+        if not questID then return nil, ("'%s' isn't a quest ID"):format(token) end
+        quests[#quests + 1] = questID
+    end
+    return quests
+end
+
 -- Parses "/reclaim add" arguments: an item ID or item link, then quest IDs and the words
 -- "any" and "account". Returns itemID, raw rule; or nil, error message.
 function Rules.Parse(text)
@@ -89,31 +114,29 @@ function Rules.Parse(text)
         end
     end
     if not itemID then return nil, "give an item ID or shift-click an item" end
-    if #quests == 0 then
-        if any or account then return nil, "'any' and 'account' need at least one quest ID" end
-        return itemID, true
-    end
-    if #quests == 1 and not account then return itemID, quests[1] end
-    local raw = quests
-    if any then raw.any = true end
-    if account then raw.account = true end
+    local raw, err = Rules.Build(quests, any, account)
+    if not raw then return nil, err end
     return itemID, raw
 end
 
--- A short description of a raw rule, for /reclaim list.
-function Rules.Describe(raw)
-    if raw == false then return "hidden" end
+-- A short description of a raw rule. questName(questID) names a quest; quest IDs are used
+-- when it's omitted.
+function Rules.Describe(raw, questName)
+    if raw == false then return "built-in rule hidden" end
     local rule = Rules.Normalize(raw)
     if not rule then return "invalid" end
     if #rule.quests == 0 then return "always safe" end
-    local ids = table.concat(rule.quests, ", ")
+    local names = {}
+    for i, questID in ipairs(rule.quests) do
+        names[i] = questName and questName(questID) or ("quest " .. questID)
+    end
     local text
-    if #rule.quests == 1 then
-        text = "after quest " .. ids
+    if #names == 1 then
+        text = "after " .. names[1]
     elseif rule.any then
-        text = "after any of quests " .. ids
+        text = "after any of " .. table.concat(names, ", ")
     else
-        text = "after all of quests " .. ids
+        text = "after all of " .. table.concat(names, ", ")
     end
     if rule.account then text = text .. " (any character)" end
     return text

@@ -31,9 +31,44 @@ local function recordAccountQuests()
     end
 end
 
-local function questName(questID)
-    return C_QuestLog.GetTitleForQuestID(questID) or ("quest " .. questID)
+-- Names come from the game when it has them loaded, then from the names saved with your rules.
+local function savedQuestName(questID)
+    for _, info in pairs(ns.db.ruleInfo) do
+        if info.quests and info.quests[questID] then return info.quests[questID] end
+    end
 end
+
+function Scanner.QuestName(questID)
+    return C_QuestLog.GetTitleForQuestID(questID) or savedQuestName(questID) or ("quest " .. questID)
+end
+
+function Scanner.ItemName(itemID)
+    local info = ns.db.ruleInfo[itemID]
+    return C_Item.GetItemNameByID(itemID) or (info and info.item) or ("item " .. itemID)
+end
+
+function Scanner.Describe(raw)
+    return ns.Rules.Describe(raw, Scanner.QuestName)
+end
+
+-- Saves item and quest names next to your rules, filling in any the game has since loaded.
+function Scanner.RecordNames()
+    for itemID, raw in pairs(ns.db.rules) do
+        local rule = ns.Rules.Normalize(raw)
+        if rule then
+            local info = ns.db.ruleInfo[itemID] or { quests = {} }
+            info.item = C_Item.GetItemNameByID(itemID) or info.item
+            local quests = {}
+            for _, questID in ipairs(rule.quests) do
+                quests[questID] = C_QuestLog.GetTitleForQuestID(questID) or info.quests[questID]
+            end
+            info.quests = quests
+            ns.db.ruleInfo[itemID] = info
+        end
+    end
+end
+
+local questName = Scanner.QuestName
 
 -- Returns the reason an item is safe to delete, or nil if it isn't.
 function Scanner.Reason(itemID)
@@ -50,6 +85,7 @@ end
 function Scanner.Scan()
     if not ns.db then return end
     recordAccountQuests()
+    Scanner.RecordNames()
     local items, byItem, free = {}, {}, 0
     local reasons = {}
     for bag = BACKPACK_CONTAINER, LAST_BAG do

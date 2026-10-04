@@ -85,12 +85,32 @@ check("parse missing item", select(2, R.Parse("")), "give an item ID or shift-cl
 check("parse bad token", select(2, R.Parse("5 seven")), "didn't understand 'seven'")
 check("parse any without quests", select(2, R.Parse("5 any")), "'any' and 'account' need at least one quest ID")
 
+-- Build
+check("build none: always", R.Build({}), true)
+check("build one: number", R.Build({ 7 }), 7)
+check("build one + account: table", R.Build({ 7 }, false, true).account, true)
+check("build any", R.Build({ 1, 2 }, true).any, true)
+check("build all leaves any unset", R.Build({ 1, 2 }).any, nil)
+check("build copies the list", #R.Build({ 1, 2 }), 2)
+check("build account without quests", select(2, R.Build({}, false, true)), "'any' and 'account' need at least one quest ID")
+
+-- ParseQuestList
+local quests = R.ParseQuestList("96139, 96140 96141")
+check("quest list: count", #quests, 3)
+check("quest list: last", quests[3], 96141)
+check("quest list: blank", #R.ParseQuestList("  "), 0)
+check("quest list: nil", #R.ParseQuestList(nil), 0)
+check("quest list: bad token", select(2, R.ParseQuestList("1, x")), "'x' isn't a quest ID")
+
 -- Describe
+local names = { [1] = "First", [2] = "Second" }
+local function questName(questID) return names[questID] end
 check("describe always", R.Describe(true), "always safe")
 check("describe single", R.Describe(96139), "after quest 96139")
-check("describe all", R.Describe({ 1, 2 }), "after all of quests 1, 2")
-check("describe any + account", R.Describe({ 1, 2, any = true, account = true }), "after any of quests 1, 2 (any character)")
-check("describe hidden", R.Describe(false), "hidden")
+check("describe all", R.Describe({ 1, 2 }), "after all of quest 1, quest 2")
+check("describe any + account", R.Describe({ 1, 2, any = true, account = true }, questName), "after any of First, Second (any character)")
+check("describe single named", R.Describe(1, questName), "after First")
+check("describe hidden", R.Describe(false), "built-in rule hidden")
 
 print(("%d checks, %d failures"):format(count, failures))
 if failures > 0 then os.exit(1) end
