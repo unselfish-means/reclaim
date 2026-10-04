@@ -85,3 +85,7 @@ Quick reference for the values on the CurseForge project page.
 | Main category | Bags & Inventory |
 | Additional categories | Quests & Leveling, Tooltip |
 | Game version | WoW: Forever (Classic Plus), toc `16001` |
+| License | MIT |
+| Project icon | [media/icon.png](media/icon.png) |
+
+To publish a release, see [RELEASING.md](RELEASING.md).
