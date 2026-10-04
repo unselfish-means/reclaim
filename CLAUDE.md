@@ -10,6 +10,7 @@ A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe t
 - `Reclaim/Rules.lua` holds the pure rule logic, with no game API. Its tests are in
   `tests/rules_test.lua`.
 - `Reclaim/BuiltinRules.lua` holds the rules that ship with the addon.
+- Releases: [RELEASING.md](RELEASING.md) and the `release-addon` skill (`.claude/skills/release-addon/`).
 - `scripts/deploy.ps1` links `Reclaim/` into the beta client's AddOns folder as a junction. Edits are
   live after `/reload`.
 

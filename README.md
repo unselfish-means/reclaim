@@ -72,6 +72,21 @@ For `<item>`, give an item ID or shift-click the item into chat, for example
 - Bag slot marks on Blizzard's bags. These hook `UpdateItems` and `EnumerateValidItems` on the container
   frames (Retail-style), with a fallback to `ContainerFrame_Update` (Classic-style). Which one Forever
   uses hasn't been confirmed.
-- Deleting from the panel: `C_Container.PickupContainerItem` followed by `DeleteCursorItem`, run from a
-  click.
 - Whether `C_QuestLog.IsQuestFlaggedCompletedOnAccount` exists on Forever. Reclaim works without it.
+
+## CurseForge project
+
+Quick reference for the values on the CurseForge project page.
+
+| Field | Value |
+|---|---|
+| Project name | Reclaim |
+| Summary | Marks bag items you no longer need, like leftover quest items, so you can delete them with confidence. |
+| Description | Paste [CURSEFORGE.md](CURSEFORGE.md) (choose Markdown in the editor) |
+| Main category | Bags & Inventory |
+| Additional categories | Quests & Leveling, Tooltip |
+| Game version | WoW: Forever (Classic Plus), toc `16001` |
+| License | MIT |
+| Project icon | [media/icon.png](media/icon.png) |
+
+To publish a release, see [RELEASING.md](RELEASING.md).
