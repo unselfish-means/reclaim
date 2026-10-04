@@ -15,8 +15,8 @@ Reclaim stays quiet: no chat spam and no popups.
 | **Review panel**: the list of safe items, one Delete button per stack | Left-click the minimap icon or its entry in the addon compartment, or type `/reclaim`. |
 | **Count badge** on the backpack button and the minimap icon | Optional. By default it appears only when 4 or fewer bag slots are free. |
 
-Right-clicking the minimap icon or the compartment entry opens a menu that turns the count badge on or
-off and opens the options page (Options › AddOns › Reclaim).
+Right-clicking the minimap icon or the compartment entry opens a menu with three entries: turn the
+count badge on or off, add a rule, and open the options page (Options › AddOns › Reclaim).
 
 Nothing is ever deleted without a click. Before deleting, the panel checks that the slot still holds the
 same item and that the item is still safe to delete.
@@ -25,6 +25,11 @@ same item and that the item is still safe to delete.
 
 Each rule is keyed by item ID. Built-in rules live in [BuiltinRules.lua](Reclaim/BuiltinRules.lua),
 and your own rules are saved account-wide. When both exist for an item, your rule wins.
+
+To add your own rule, choose **Add rule…** from the minimap right-click menu, or use **Add rule** on
+the options page. To fill in the item, drop it on the dialog's slot, shift-click it, or type its ID.
+Then enter quest IDs separated by commas, or leave the box blank for "always safe". The options page
+lists your rules, each with Edit and Remove.
 
 | Rule | Meaning |
 |---|---|
