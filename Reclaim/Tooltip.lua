@@ -7,6 +7,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
     if issecretvalue and issecretvalue(data.id) then return end
     local reason = ns.Scanner.Reason(data.id)
     if not reason then return end
+    tooltip:AddLine(" ")
     tooltip:AddLine("Reclaim: safe to delete", 0.25, 1, 0.25)
     tooltip:AddLine(reason, 0.6, 0.6, 0.6, true)
 end)
