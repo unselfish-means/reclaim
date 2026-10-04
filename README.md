@@ -82,6 +82,7 @@ Quick reference for the values on the CurseForge project page.
 |---|---|
 | Project name | Reclaim |
 | Summary | Marks bag items you no longer need, like leftover quest items, so you can delete them with confidence. |
+| Description | Paste [CURSEFORGE.md](CURSEFORGE.md) (choose Markdown in the editor) |
 | Main category | Bags & Inventory |
 | Additional categories | Quests & Leveling, Tooltip |
 | Game version | WoW: Forever (Classic Plus), toc `16001` |

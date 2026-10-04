@@ -45,7 +45,7 @@ Reclaim/
   LICENSE      (copied from the repo root)
 ```
 
-Nothing else ships: no `.claude/`, `README.md`, `RELEASING.md`, `tests/`, `scripts/`, `media/`, or
+Nothing else ships: no `.claude/`, `README.md`, `RELEASING.md`, `CURSEFORGE.md`, `tests/`, `scripts/`, `media/`, or
 `.git`. Don't upload GitHub's auto-generated source zip. Its root folder is `reclaim-<tag>/`, so the
 game won't load it.
 
