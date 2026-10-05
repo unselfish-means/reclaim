@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Reclaim
 ## Notes: Marks bag items you no longer need, so you can delete them with confidence.
-## Author: Kevin Rich
+## Author: WIKR
 ## Version: 1.0.0
 ## SavedVariables: ReclaimDB
 ## OptionalDeps: Baganator
