@@ -14,6 +14,18 @@ A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe t
 - `scripts/deploy.ps1` links `Reclaim/` into the beta client's AddOns folder as a junction. Edits are
   live after `/reload`.
 
+## GitHub account
+
+The repo is `unselfish-means/reclaim`, under the same account as BestAroundRevisited. In `gh` that
+account is the `puppysnuff` login, and it's usually not the active account.
+
+- **Git**: this clone's `.git/config` sets the commit identity to `unselfish-means <puppysnuff@gmail.com>`
+  and adds a credential helper that hands git `gh auth token -u puppysnuff`, so `git push` works as
+  `unselfish-means` whichever `gh` account is active.
+- **gh**: prefix commands with that account's token instead of switching accounts, for example
+  `GH_TOKEN="$(gh auth token -u puppysnuff)" gh pr create ...` (Bash) or
+  `$env:GH_TOKEN = gh auth token -u puppysnuff` (PowerShell).
+
 ## Testing
 
 There's no system Lua. Run the tests with fengari from npm, installed in a scratch directory:
