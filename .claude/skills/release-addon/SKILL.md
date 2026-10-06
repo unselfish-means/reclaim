@@ -1,15 +1,16 @@
 ---
 name: release-addon
-description: Cut a GitHub release of Reclaim from main — packages a CurseForge-ready zip and tags it with the .toc version. Use when the user asks to release, cut a release, publish a version, or make a CurseForge build.
+description: Cut a release of Reclaim from main — pushes a tag with the .toc version (which makes CurseForge package it) and publishes a GitHub release with a zip. Use when the user asks to release, cut a release, publish a version, or make a CurseForge build.
 ---
 
 # Release Addon
 
-Publishes the addon at `origin/main` as a GitHub release via
-[release.ps1](release.ps1). The release is tagged with the `## Version` from
-`Reclaim/Reclaim.toc` (bare, no `v`) and carries a `Reclaim-<ver>.zip` whose
-root folder is `Reclaim/` with only the ship list inside — the file the user
-then uploads to CurseForge by hand. Full conventions live in
+Publishes the addon at `origin/main` via [release.ps1](release.ps1). It pushes
+a tag with the `## Version` from `Reclaim/Reclaim.toc` (bare, no `v`). That
+push makes CurseForge package the tag as a release, following
+[.pkgmeta](../../../.pkgmeta). The script also publishes a GitHub release on the
+tag with a `Reclaim-<ver>.zip`, whose root folder is `Reclaim/` with only the
+ship list inside. Full conventions live in
 [RELEASING.md](../../../RELEASING.md); this skill is the executable half.
 
 A release is outward-facing and not cleanly reversible (tags stay, CurseForge
@@ -58,13 +59,13 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
        -NotesFile "<path>\notes.md"
    ```
 
-   `gh release create` creates the tag on the target commit itself — never
-   pre-tag.
+   The script tags the commit and pushes the tag itself — never pre-tag.
+   It pushes the tag with `git` rather than letting `gh` create it, so
+   CurseForge's webhook sees a tag push.
 
-6. **Report.** Give the user the release URL and the local zip path the
-   script prints, and remind them the CurseForge upload is manual (game
-   versions = every build in the `.toc`'s `## Interface` line; a brand-new
-   client build may not be in CurseForge's picker yet).
+6. **Report.** Give the user the release URL, and remind them to check the
+   CurseForge project's Files tab for the packaged release (and paste the
+   notes as its changelog if they want them there).
 
 ## Flags
 
@@ -80,7 +81,8 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
   protects.
 - Ship list: the `.toc`, every file it lists, `Reclaim/Libs/` wholesale, and
   the repo-root `LICENSE`. If a new runtime file appears that isn't
-  `.toc`-listed (textures, sounds), add it to the script's ship list.
+  `.toc`-listed (textures, sounds), add it to the script's ship list. If a
+  new top-level repo file or folder appears, add it to `.pkgmeta`'s `ignore`.
 - The repo's GitHub account is usually not the active `gh` account. Before
   running the script, set `GH_TOKEN` to that account's token so
   `gh release create` has push access. `CLAUDE.local.md` (uncommitted; see
