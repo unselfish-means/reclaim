@@ -80,7 +80,8 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
   `1.0.0`, the release is `1.0.0`. That's the invariant the tag guard
   protects.
 - Ship list: the `.toc`, every file it lists, `Reclaim/Libs/` wholesale, and
-  the repo-root `LICENSE`. If a new runtime file appears that isn't
+  `Reclaim/LICENSE` (a copy of the repo-root one, so CurseForge's package
+  includes it too). If a new runtime file appears that isn't
   `.toc`-listed (textures, sounds), add it to the script's ship list. If a
   new top-level repo file or folder appears, add it to `.pkgmeta`'s `ignore`.
 - The repo's GitHub account is usually not the active `gh` account. Before
