@@ -22,6 +22,9 @@ account is the `puppysnuff` login, and it's usually not the active account.
 - **Git**: this clone's `.git/config` sets the commit identity to `unselfish-means <puppysnuff@gmail.com>`
   and adds a credential helper that hands git `gh auth token -u puppysnuff`, so `git push` works as
   `unselfish-means` whichever `gh` account is active.
+- **Signing**: the same `.git/config` sets `user.signingkey` to `~/.ssh/id_ed25519_unselfish_means_signing.pub`,
+  a key registered as a signing key on `unselfish-means`, so commits show Verified. Don't sign with the
+  global (personal) key.
 - **gh**: prefix commands with that account's token instead of switching accounts, for example
   `GH_TOKEN="$(gh auth token -u puppysnuff)" gh pr create ...` (Bash) or
   `$env:GH_TOKEN = gh auth token -u puppysnuff` (PowerShell).
