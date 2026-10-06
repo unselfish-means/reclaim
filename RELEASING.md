@@ -16,7 +16,8 @@ follows the shared WIKR setup, which is described in the `curseforge-packaging` 
   either is missing, the workflow fails.
 - The game version comes from `## Interface`. The packager maps `16xxx` to WoW: Forever, so `16001` is
   1.60.1.
-- The file's display name is the bare tag. Its changelog is generated from the commit messages since
+- The file and its CurseForge display name are `Reclaim-<tag>`, such as `Reclaim-1.0.4`. Its changelog
+  is generated from the commit messages since
   the previous tag, and it ships in the package as `CHANGELOG.md`.
 - To retry an upload, run the workflow by hand on the *Actions* tab and give it the existing tag. Only
   tags whose `.toc` has `X-Curse-Project-ID` can be uploaded this way, so 1.0.2 and earlier can't.
