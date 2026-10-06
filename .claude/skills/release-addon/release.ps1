@@ -1,7 +1,8 @@
 <#
 .SYNOPSIS
-    Packages a CurseForge-ready zip of the addon from a git ref and (unless
-    -DryRun) publishes it as a GitHub release tagged with the .toc version.
+    Packages a zip of the addon from a git ref and (unless -DryRun) pushes a
+    tag with the .toc version and publishes a GitHub release on it. The tag
+    push is what triggers CurseForge's automatic packaging (see .pkgmeta).
 
 .DESCRIPTION
     The version is never passed in -- it is read from `## Version` in the .toc
@@ -145,12 +146,17 @@ try {
     }
 
     # --- Publish ---------------------------------------------------------------
-    # gh creates the tag at --target; do not pre-tag.
-    gh release create $Version $Zip --target $Sha --title $Title --notes-file $NotesFile --latest
-    if ($LASTEXITCODE -ne 0) { throw "gh release create failed" }
+    # Push the tag with git so CurseForge's webhook sees a tag push and packages
+    # it as a release; then attach the GitHub release to that existing tag.
+    git tag $Version $Sha
+    if ($LASTEXITCODE -ne 0) { throw "git tag failed" }
+    git push origin "refs/tags/$Version"
+    if ($LASTEXITCODE -ne 0) { throw "git push of tag $Version failed" }
+    gh release create $Version $Zip --verify-tag --title $Title --notes-file $NotesFile --latest
+    if ($LASTEXITCODE -ne 0) { throw "gh release create failed (tag $Version is already pushed; retry with gh release create)" }
 
     Write-Host ""
-    Write-Host "Upload this file to CurseForge: $Zip"
+    Write-Host "CurseForge packages tag $Version automatically. Check the project's Files tab."
 } finally {
     Pop-Location
 }

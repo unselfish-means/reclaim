@@ -1,7 +1,22 @@
 # Releasing
 
-How a change goes from a merged PR to a GitHub release and a CurseForge upload.
-There is no CI or packager. Every step is manual, which is fine at this size.
+How a change goes from a merged PR to a GitHub release and a CurseForge file.
+
+## CurseForge automatic packaging
+
+The CurseForge project is linked to this repo with "Package all commits", and
+[.pkgmeta](.pkgmeta) tells the packager what to ship:
+
+- **Every push to `main`** is packaged as an **alpha** file. Players on the release channel don't see
+  it.
+- **Every pushed tag** is packaged as a **release** file. A tag containing `beta` or `alpha` (such as
+  `1.1.0-beta1`) is packaged as that type instead.
+- `.pkgmeta` moves `Reclaim/Reclaim/` up to be the package's `Reclaim/` folder and ignores the rest
+  of the repo. Dot-folders such as `.claude/` are ignored automatically. A new top-level file or
+  folder must be added to `ignore`.
+- The repo-root `LICENSE` sits outside the moved folder, so the CurseForge file doesn't include it.
+  The GitHub release zip still does.
+- CurseForge sets the file's game version from the `.toc`'s `## Interface` line.
 
 ## Conventions
 
@@ -34,8 +49,9 @@ Claude to "cut a release", or run it yourself). It:
 - refuses if that tag or release already exists (bump the version in a PR);
 - packages from `git archive`, not the working tree, so local-only files can't leak in;
 - zips the **ship list only** under a `Reclaim/` root and checks it before publishing;
-- creates the GitHub release with `gh release create --target <sha>`, which creates the tag for you.
-  Never pre-tag.
+- tags the commit and pushes the tag with `git push`, which triggers the CurseForge release build
+  (a tag created through `gh`/the API may not reach the webhook). Never pre-tag;
+- creates the GitHub release on that tag with the zip attached.
 
 ```
 Reclaim/
@@ -77,34 +93,21 @@ WoW: Forever (Classic Plus) 1.60
 Download `Reclaim-<ver>.zip` and extract it into `Interface\AddOns\`.
 ```
 
-The script prints the release URL and the local path of the zip to upload to CurseForge. Check the
-result with `gh release view <ver> --json tagName,targetCommitish,assets`.
-
-## Upload to CurseForge
-
-The upload is manual, on the project page's *Upload File* form. The project page values (name, summary,
-categories) and the icon are listed in the README's [CurseForge project](README.md#curseforge-project)
-section.
-
-1. **File**: the `Reclaim-<ver>.zip` you just attached to the GitHub release. Using the same file keeps
-   the two in sync.
-2. **Display name**: `<ver>`, such as `1.0.0`.
-3. **Release type**: Release. Use Beta only if the `.toc` targets a beta client you haven't been able to
-   test properly.
-4. **Game versions**: select every build listed in the `.toc`'s `## Interface` line. A brand-new client
-   build may not be in the list yet. If so, upload without it and say so in the changelog rather than
-   picking the wrong version.
-5. **Changelog**: paste the GitHub release notes (Markdown works).
+The script prints the release URL. Check the result with
+`gh release view <ver> --json tagName,targetCommitish,assets`.
 
 ## After releasing
 
 - Check that the *Latest* badge on GitHub points at the new tag.
+- On the CurseForge project's *Files* tab, check that `<ver>` appears as a **Release** with the right
+  game version. The packager's changelog is built from commits, so edit the file and paste the GitHub
+  release notes as its changelog if you want the player-facing notes there.
 - If a client build was missing from CurseForge's version list, check back after a few days and edit the
-  file's game versions once it appears.
+  file's game versions once it appears. The project page values (name, summary, categories) and the
+  icon are listed in the README's [CurseForge project](README.md#curseforge-project) section.
 
 ## Recovering from a bad release
 
 - **Wrong zip or wrong notes, but the tag is fine**: run `gh release upload <ver> <zip> --clobber` or
-  `gh release edit <ver> --notes-file ...`. Re-upload to CurseForge as a new file, and archive the bad
-  one there.
+  `gh release edit <ver> --notes-file ...`. On CurseForge, edit or archive the packaged file.
 - **Bad code**: don't move the tag. Fix it with a patch bump and a new release.
