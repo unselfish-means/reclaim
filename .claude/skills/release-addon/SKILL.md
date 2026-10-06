@@ -72,7 +72,7 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
    ```
 
    If it fails, show the user `gh run view <id> --log-failed`. A missing
-   `CF_API_TOKEN` secret is the user's to add; once it's fixed, retry with
+   `CURSEFORGE_API_TOKEN` Actions secret is the user's to add; once it's fixed, retry with
    `gh workflow run release.yml -f tag=<ver>`.
 
 7. **Report.** Give the user the release URL and the workflow result, and

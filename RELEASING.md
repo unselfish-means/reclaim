@@ -12,7 +12,8 @@ follows the shared WIKR setup, which is described in the `curseforge-packaging` 
 - **Every pushed tag** is uploaded as a **release** file. A tag containing `beta` or `alpha` (such as
   `1.1.0-beta1`) is uploaded as that type instead. Pushes to `main` don't upload anything.
 - The CurseForge project ID is `## X-Curse-Project-ID` in the `.toc`. The upload token is the
-  `CF_API_TOKEN` repository secret. If either is missing, the workflow fails.
+  `CURSEFORGE_API_TOKEN` repository **Actions** secret (a Codespaces secret doesn't reach Actions). If
+  either is missing, the workflow fails.
 - The game version comes from `## Interface`. The packager maps `16xxx` to WoW: Forever, so `16001` is
   1.60.1.
 - The file's display name is the bare tag. Its changelog is generated from the commit messages since
