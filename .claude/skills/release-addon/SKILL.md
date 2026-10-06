@@ -1,14 +1,15 @@
 ---
 name: release-addon
-description: Cut a release of Reclaim from main — pushes a tag with the .toc version (which makes CurseForge package it) and publishes a GitHub release with a zip. Use when the user asks to release, cut a release, publish a version, or make a CurseForge build.
+description: Cut a release of Reclaim from main — pushes a tag with the .toc version (which runs the workflow that uploads it to CurseForge) and publishes a GitHub release with a zip. Use when the user asks to release, cut a release, publish a version, or make a CurseForge build.
 ---
 
 # Release Addon
 
 Publishes the addon at `origin/main` via [release.ps1](release.ps1). It pushes
 a tag with the `## Version` from `Reclaim/Reclaim.toc` (bare, no `v`). That
-push makes CurseForge package the tag as a release, following
-[.pkgmeta](../../../.pkgmeta). The script also publishes a GitHub release on the
+push runs the [Package and release](../../../.github/workflows/release.yml)
+workflow, which packages the tag following [.pkgmeta](../../../.pkgmeta) and
+uploads it to CurseForge. The script also publishes a GitHub release on the
 tag with a `Reclaim-<ver>.zip`, whose root folder is `Reclaim/` with only the
 ship list inside. Full conventions live in
 [RELEASING.md](../../../RELEASING.md); this skill is the executable half.
@@ -60,12 +61,23 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
    ```
 
    The script tags the commit and pushes the tag itself — never pre-tag.
-   It pushes the tag with `git` rather than letting `gh` create it, so
-   CurseForge's webhook sees a tag push.
+   It pushes the tag with `git` rather than letting `gh` create it, so the
+   tag push starts the workflow.
 
-6. **Report.** Give the user the release URL, and remind them to check the
-   CurseForge project's Files tab for the packaged release (and paste the
-   notes as its changelog if they want them there).
+6. **Check the upload.** Find the workflow run for the tag and wait for it:
+
+   ```powershell
+   gh run list --workflow release.yml --limit 3
+   gh run watch <id> --exit-status
+   ```
+
+   If it fails, show the user `gh run view <id> --log-failed`. A missing
+   `CURSEFORGE_API_TOKEN` Actions secret is the user's to add; once it's fixed, retry with
+   `gh workflow run release.yml -f tag=<ver>`.
+
+7. **Report.** Give the user the release URL and the workflow result, and
+   remind them to check the CurseForge project's Files tab (and replace the
+   generated changelog with the notes if they want them there).
 
 ## Flags
 
