@@ -4,5 +4,6 @@
 local _, ns = ...
 
 ns.BuiltinRules = {
+    [5505] = 1023, -- Teronis' Journal: Raene's Cleansing
     [281149] = 96139, -- Memories of Valor: The Valor Family
 }
