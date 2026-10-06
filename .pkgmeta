@@ -1,0 +1,16 @@
+# CurseForge automatic packaging. Every push to main is packaged as an alpha;
+# a pushed tag is packaged as a release (or beta/alpha if the tag says so).
+# The addon lives in a subfolder, so move it up to be the package root.
+package-as: Reclaim
+
+move-folders:
+  Reclaim/Reclaim: Reclaim
+
+ignore:
+  - media
+  - scripts
+  - tests
+  - CLAUDE.md
+  - CURSEFORGE.md
+  - README.md
+  - RELEASING.md
