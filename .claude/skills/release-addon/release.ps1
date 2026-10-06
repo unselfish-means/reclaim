@@ -10,7 +10,7 @@
     Packaging works from `git archive`, not the working tree, so untracked or
     local-only files can't leak into the zip. The zip's root folder is the
     addon folder (Reclaim/) containing only the ship list: the .toc, every
-    file it lists, the whole Libs\ folder, and the repo's LICENSE.
+    file it lists, the whole Libs\ folder, and Reclaim\LICENSE.
 
 .PARAMETER Title
     Release title. Short description of what changed, not the version.
@@ -98,7 +98,7 @@ try {
     # --- Copy the ship list ---------------------------------------------------
     # The .toc and every file it lists (paths are relative to the addon folder),
     # plus Libs\ as a whole folder so nothing a library needs is left behind,
-    # plus LICENSE from the repo root, which MIT asks to ship with copies.
+    # plus the addon folder's LICENSE, which MIT asks to ship with copies.
     $AddonSrc = Join-Path $Src $AddonName
     $listed = $tocText | ForEach-Object { $_.Trim() } | Where-Object {
         $_ -ne "" -and -not $_.StartsWith("#") -and -not $_.StartsWith("Libs\")
@@ -113,8 +113,8 @@ try {
     $libs = Join-Path $AddonSrc "Libs"
     if (-not (Test-Path $libs)) { throw "$AddonName\Libs\ not found at $Ref" }
     Copy-Item -Recurse $libs (Join-Path $Pkg "Libs")
-    $license = Join-Path $Src "LICENSE"
-    if (-not (Test-Path $license)) { throw "LICENSE not found at $Ref" }
+    $license = Join-Path $AddonSrc "LICENSE"
+    if (-not (Test-Path $license)) { throw "$AddonName\LICENSE not found at $Ref" }
     Copy-Item $license (Join-Path $Pkg "LICENSE")
 
     # Every .toc-listed library file must have made it in with the Libs\ copy.
