@@ -11,6 +11,5 @@ ignore:
   - scripts
   - tests
   - CLAUDE.md
-  - CURSEFORGE.md
   - README.md
   - RELEASING.md

@@ -1,7 +1,9 @@
 # Reclaim
 
-A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe to delete. See
-[README.md](README.md) for what it does, the rule format, and commands.
+A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe to delete.
+[README.md](README.md) is the player-facing description of what it does and its commands, and it's
+also the description pasted into CurseForge. Keep development notes out of it; they belong here,
+in [RELEASING.md](RELEASING.md), or in files linked from here.
 
 ## Layout
 
@@ -13,6 +15,32 @@ A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe t
 - Releases: [RELEASING.md](RELEASING.md) and the `release-addon` skill (`.claude/skills/release-addon/`).
 - `scripts/deploy.ps1` links `Reclaim/` into the beta client's AddOns folder as a junction. Edits are
   live after `/reload`.
+- `Reclaim/Libs/` vendors LibStub, CallbackHandler-1.0, LibDataBroker-1.1, and LibDBIcon-1.0 (minor 55).
+- `media/icon.png` is the CurseForge project icon. It doesn't ship.
+
+## Rule format
+
+Each rule is keyed by item ID. Built-in rules live in `Reclaim/BuiltinRules.lua`, and the player's own
+rules are saved account-wide in `ReclaimDB.rules`. When both exist for an item, the player's rule wins.
+
+| Rule | Meaning |
+|---|---|
+| `true` | Always safe |
+| `96139` | Safe once quest 96139 is complete |
+| `{96139, 96140}` | Safe once **all** the listed quests are complete |
+| `{96139, 96140, any = true}` | Safe once **any** of the listed quests is complete |
+| `{96139, account = true}` | A quest counts if **any character** on the account completed it |
+
+Account-wide quests: Reclaim records every quest a rule mentions once any character has it complete,
+so a character only counts after it has logged in with Reclaim installed. If the client has
+`C_QuestLog.IsQuestFlaggedCompletedOnAccount`, Reclaim checks that too.
+
+## Not yet verified in game
+
+- Bag slot marks on Blizzard's bags. These hook `UpdateItems` and `EnumerateValidItems` on the container
+  frames (Retail-style), with a fallback to `ContainerFrame_Update` (Classic-style). Which one Forever
+  uses hasn't been confirmed.
+- Whether `C_QuestLog.IsQuestFlaggedCompletedOnAccount` exists on Forever. Reclaim works without it.
 
 ## GitHub account
 
@@ -51,3 +79,18 @@ To promote rules ("pull in my rules"):
    comment naming the item and quest, for example `[281149] = 96139, -- Memories of Valor: The Valor Family`.
 3. Open a PR. The owner's copies in SavedVariables can stay; a user rule that matches the built-in
    one changes nothing.
+
+## CurseForge project
+
+Quick reference for the values on the CurseForge project page (project ID 1727163).
+
+| Field | Value |
+|---|---|
+| Project name | Reclaim |
+| Summary | Marks bag items you no longer need, like leftover quest items, so you can delete them with confidence. |
+| Description | Paste [README.md](README.md) (choose Markdown in the editor) |
+| Main category | Bags & Inventory |
+| Additional categories | Quests & Leveling, Tooltip |
+| Game version | WoW: Forever (Classic Plus), toc `16001` |
+| License | MIT |
+| Project icon | [media/icon.png](media/icon.png) |

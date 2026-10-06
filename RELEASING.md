@@ -69,7 +69,7 @@ Reclaim/
   LICENSE      (a copy of the repo-root LICENSE)
 ```
 
-Nothing else ships: no `.claude/`, `README.md`, `RELEASING.md`, `CURSEFORGE.md`, `tests/`, `scripts/`, `media/`, or
+Nothing else ships: no `.claude/`, `CLAUDE.md`, `README.md`, `RELEASING.md`, `tests/`, `scripts/`, `media/`, or
 `.git`. Don't upload GitHub's auto-generated source zip. Its root folder is `reclaim-<tag>/`, so the
 game won't load it.
 
@@ -115,7 +115,9 @@ The script prints the release URL. Check the result with
   changelog with the GitHub release notes.
 - If a client build was missing from CurseForge's version list, check back after a few days and edit the
   file's game versions once it appears. The project page values (name, summary, categories) and the
-  icon are listed in the README's [CurseForge project](README.md#curseforge-project) section.
+  icon are listed in the [CurseForge project](CLAUDE.md#curseforge-project) section of CLAUDE.md.
+- If the release changes what players see (a new feature, command, or client), update
+  [README.md](README.md) and paste it into the CurseForge project's description.
 
 ## Recovering from a bad release
 

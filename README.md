@@ -1,92 +1,55 @@
 # Reclaim
 
-A **WoW: Forever** addon (toc `16001`) that marks the bag items you no longer need, so you can delete
-them with confidence. An item is marked by item ID, either always or once one or more quests are
-complete.
+**Know what's safe to delete.** Reclaim marks the items in your bags that you no longer need, like a
+letter for a quest you've already finished, so you can clear them out with confidence instead of
+guessing.
 
-## How it shows up
+No chat spam and no popups. Reclaim shows its marks where you're already looking.
 
-Reclaim stays quiet: no chat spam and no popups.
+## What it does
 
-| Surface | When you see it |
-|---|---|
-| **Bag slot mark**: a red X in the slot's corner | Whenever your bags are open. Works with Blizzard's bags and with Baganator (as a corner widget, which you can move in Baganator's settings). Neither is required. |
-| **Tooltip line**: "Reclaim: safe to delete" and the completed quests | When you hover the item. |
-| **Review panel**: the list of safe items, one Delete button per stack | Left-click the minimap icon or its entry in the addon compartment, or type `/reclaim`. |
-| **Count badge** on the backpack button and the minimap icon | Optional. By default it appears only when 4 or fewer bag slots are free. |
+- **Marks items in your bags.** A small red X appears in the corner of any slot holding an item that's
+  safe to delete. It works with Blizzard's bags and with Baganator, and needs neither.
+- **Explains why on the tooltip.** Hover an item to see *Reclaim: safe to delete* and the quests you
+  completed that made it safe.
+- **Clears your bags in one place.** Left-click the minimap icon (or Reclaim's entry in the addon
+  compartment) to open a list of everything that's safe to delete, with one **Delete** button per stack.
+  Nothing is ever deleted without your click. Before deleting, Reclaim checks that the slot still holds
+  that item and that it's still safe.
+- **Speaks up when it matters.** An optional count badge on your backpack and the minimap icon stays
+  hidden until your bags are nearly full, which is when you actually want to know.
 
-Right-clicking the minimap icon or the compartment entry opens a menu with three entries: turn the
-count badge on or off, add a rule, and open the options page (Options › AddOns › Reclaim).
+## Your own rules
 
-Nothing is ever deleted without a click. Before deleting, the panel checks that the slot still holds the
-same item and that the item is still safe to delete.
+Reclaim comes with built-in rules, and you can add your own in a few seconds:
 
-## Rules
+1. Right-click the minimap icon and choose **Add rule…**
+2. Drop an item on the slot, or shift-click it in your bags.
+3. Enter the quest IDs that make it safe to delete, or leave the box blank if it's always safe.
 
-Each rule is keyed by item ID. Built-in rules live in [BuiltinRules.lua](Reclaim/BuiltinRules.lua),
-and your own rules are saved account-wide. When both exist for an item, your rule wins.
+A rule can require **all** of several quests, or **any** one of them. Tick **Any character counts** for
+quests that one of your other characters may have finished.
 
-To add your own rule, choose **Add rule…** from the minimap right-click menu, or use **Add rule** on
-the options page. To fill in the item, drop it on the dialog's slot, shift-click it, or type its ID.
-Then enter quest IDs separated by commas, or leave the box blank for "always safe". The options page
-lists your rules, each with Edit and Remove.
-
-| Rule | Meaning |
-|---|---|
-| `true` | Always safe |
-| `96139` | Safe once quest 96139 is complete |
-| `{96139, 96140}` | Safe once **all** the listed quests are complete |
-| `{96139, 96140, any = true}` | Safe once **any** of the listed quests is complete |
-| `{96139, account = true}` | A quest counts if **any character** on the account completed it |
-
-**How account-wide works:** Reclaim remembers every quest a rule mentions once any character has it
-complete. A character only counts after it has logged in with Reclaim installed. If the client has
-`C_QuestLog.IsQuestFlaggedCompletedOnAccount`, Reclaim checks that too.
+Your rules are saved account-wide. Review, edit, or remove them under **Options › AddOns › Reclaim**.
 
 ## Commands
 
-```
-/reclaim                                      toggle the review panel
-/reclaim add <item> [quest ...] [any] [account]
-/reclaim remove <item>                        remove your rule; run it again to hide a built-in rule
-/reclaim list
-/reclaim threshold <n>                        count badge appears at n or fewer free slots
-/reclaim options
-```
-
-For `<item>`, give an item ID or shift-click the item into chat, for example
-`/reclaim add 281149 96139`. To bring back a built-in rule you hid, add it again with
-`/reclaim add`.
-
-## Development
-
-- **Deploy**: `scripts/deploy.ps1` links the `Reclaim` folder into the beta client's `Interface\AddOns`
-  as a junction. Edits are live after `/reload`.
-- **Tests**: The rules logic in [Rules.lua](Reclaim/Rules.lua) is pure Lua. Run its tests with any Lua
-  interpreter from the repo root: `lua tests/rules_test.lua`.
-- **Libraries**: LibStub, CallbackHandler-1.0, LibDataBroker-1.1, and LibDBIcon-1.0 (minor 55) are
-  vendored in `Reclaim/Libs`.
-
-### Not yet verified in game
-
-- Bag slot marks on Blizzard's bags. These hook `UpdateItems` and `EnumerateValidItems` on the container
-  frames (Retail-style), with a fallback to `ContainerFrame_Update` (Classic-style). Which one Forever
-  uses hasn't been confirmed.
-- Whether `C_QuestLog.IsQuestFlaggedCompletedOnAccount` exists on Forever. Reclaim works without it.
-
-## CurseForge project
-
-Quick reference for the values on the CurseForge project page.
-
-| Field | Value |
+| Command | What it does |
 |---|---|
-| Project name | Reclaim |
-| Summary | Marks bag items you no longer need, like leftover quest items, so you can delete them with confidence. |
-| Description | Paste [CURSEFORGE.md](CURSEFORGE.md) (choose Markdown in the editor) |
-| Main category | Bags & Inventory |
-| Additional categories | Quests & Leveling, Tooltip |
-| Game version | WoW: Forever (Classic Plus), toc `16001` |
-| License | MIT |
-| Project icon | [media/icon.png](media/icon.png) |
+| `/reclaim` | Open or close the review list |
+| `/reclaim add <item> [quest ...] [any] [account]` | Add a rule from chat |
+| `/reclaim remove <item>` | Remove your rule, or hide a built-in one |
+| `/reclaim list` | List built-in rules and your rules |
+| `/reclaim threshold <n>` | Show the count badge when <n> or fewer bag slots are free |
+| `/reclaim options` | Open the options page |
 
-To publish a release, see [RELEASING.md](RELEASING.md).
+For `<item>`, shift-click the item into chat or type its item ID.
+
+## Good to know
+
+- **Reclaim never deletes anything by itself.** Every deletion is a click on a Delete button.
+- **Account-wide quests:** a character counts once it has logged in with Reclaim installed.
+- **Game version:** built for WoW: Forever (Classic Plus).
+
+Found an item that should be on the built-in list? Leave a comment with the item and the quest that
+makes it safe to delete.
