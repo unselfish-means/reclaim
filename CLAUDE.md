@@ -16,18 +16,8 @@ A WoW: Forever addon (toc `16001`, Retail-style API) that marks bag items safe t
 
 ## GitHub account
 
-The repo is `unselfish-means/reclaim`, under the same account as BestAroundRevisited. In `gh` that
-account is the `puppysnuff` login, and it's usually not the active account.
-
-- **Git**: this clone's `.git/config` sets the commit identity to `unselfish-means <48777436+unselfish-means@users.noreply.github.com>`
-  and adds a credential helper that hands git `gh auth token -u puppysnuff`, so `git push` works as
-  `unselfish-means` whichever `gh` account is active.
-- **Signing**: the same `.git/config` sets `user.signingkey` to `~/.ssh/id_ed25519_unselfish_means_signing.pub`,
-  a key registered as a signing key on `unselfish-means`, so commits show Verified. Don't sign with the
-  global (personal) key.
-- **gh**: prefix commands with that account's token instead of switching accounts, for example
-  `GH_TOKEN="$(gh auth token -u puppysnuff)" gh pr create ...` (Bash) or
-  `$env:GH_TOKEN = gh auth token -u puppysnuff` (PowerShell).
+The GitHub account and commit setup are in `CLAUDE.local.md` at the repo root (in a
+worktree, look in the main checkout's root). It isn't committed. Read it before any commit, push, or `gh` command.
 
 ## Testing
 
