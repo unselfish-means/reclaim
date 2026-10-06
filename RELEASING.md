@@ -14,8 +14,8 @@ The CurseForge project is linked to this repo with "Package all commits", and
 - `.pkgmeta` moves `Reclaim/Reclaim/` up to be the package's `Reclaim/` folder and ignores the rest
   of the repo. Dot-folders such as `.claude/` are ignored automatically. A new top-level file or
   folder must be added to `ignore`.
-- The repo-root `LICENSE` sits outside the moved folder, so the CurseForge file doesn't include it.
-  The GitHub release zip still does.
+- `Reclaim/LICENSE` is a copy of the repo-root `LICENSE`, so it ships inside the moved folder. The root
+  copy stays for GitHub's license detection. Change both together.
 - CurseForge sets the file's game version from the `.toc`'s `## Interface` line.
 
 ## Conventions
@@ -58,7 +58,7 @@ Reclaim/
   Reclaim.toc
   *.lua        (every file the .toc lists)
   Libs/        (whole folder)
-  LICENSE      (copied from the repo root)
+  LICENSE      (a copy of the repo-root LICENSE)
 ```
 
 Nothing else ships: no `.claude/`, `README.md`, `RELEASING.md`, `CURSEFORGE.md`, `tests/`, `scripts/`, `media/`, or
