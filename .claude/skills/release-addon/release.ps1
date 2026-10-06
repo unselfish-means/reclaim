@@ -148,7 +148,8 @@ try {
     # --- Publish ---------------------------------------------------------------
     # Push the tag with git so CurseForge's webhook sees a tag push and packages
     # it as a release; then attach the GitHub release to that existing tag.
-    git tag $Version $Sha
+    # A message keeps this working when tag.gpgsign makes every tag annotated.
+    git tag -m "$AddonName $Version" $Version $Sha
     if ($LASTEXITCODE -ne 0) { throw "git tag failed" }
     git push origin "refs/tags/$Version"
     if ($LASTEXITCODE -ne 0) { throw "git push of tag $Version failed" }
