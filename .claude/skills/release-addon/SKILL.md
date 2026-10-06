@@ -81,15 +81,7 @@ sees it). **Always dry-run first and get an explicit yes before the real run.**
 - Ship list: the `.toc`, every file it lists, `Reclaim/Libs/` wholesale, and
   the repo-root `LICENSE`. If a new runtime file appears that isn't
   `.toc`-listed (textures, sounds), add it to the script's ship list.
-- The repo is `unselfish-means/reclaim`, which `gh` knows as the `puppysnuff`
-  login; it's usually not the active `gh` account. Run the script with that
-  account's token so `gh release create` has push access, without switching
-  the active account:
-
-  ```powershell
-  $env:GH_TOKEN = gh auth token -u puppysnuff
-  & "<repo-root>\.claude\skills\release-addon\release.ps1" -DryRun
-  ```
-
-  Git pushes already use that account through this repo's local credential
-  helper (see [CLAUDE.md](../../../CLAUDE.md#github-account)).
+- The repo's GitHub account is usually not the active `gh` account. Before
+  running the script, set `GH_TOKEN` to that account's token so
+  `gh release create` has push access. `CLAUDE.local.md` (uncommitted; see
+  [CLAUDE.md](../../../CLAUDE.md#github-account)) has the exact command.
