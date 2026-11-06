@@ -13,8 +13,11 @@ in [RELEASING.md](RELEASING.md), or in files linked from here.
   `tests/rules_test.lua`.
 - `Reclaim/BuiltinRules.lua` holds the rules that ship with the addon.
 - Releases: [RELEASING.md](RELEASING.md) and the `release-addon` skill (`.claude/skills/release-addon/`).
-- `scripts/deploy.ps1` links `Reclaim/` into the beta client's AddOns folder as a junction. Edits are
-  live after `/reload`.
+- `scripts/deploy.ps1` pushes a test build: it copies `Reclaim/` into the `_forever_` client's AddOns
+  folder as `Reclaim-Test`, with the `.toc` renamed and `-Test` on the title. A CurseForge install keeps
+  the plain `Reclaim` folder, so enable one at a time in the game's AddOns list. Re-run it from the
+  worktree holding the change, then `/reload` (restart for a new file). Never hardcode
+  `Interface\AddOns\Reclaim\`; use the addon name from `...`.
 - `Reclaim/Libs/` vendors LibStub, CallbackHandler-1.0, LibDataBroker-1.1, and LibDBIcon-1.0 (minor 55).
 - `media/icon.png` is the CurseForge project icon. It doesn't ship.
 
@@ -64,7 +67,7 @@ The owner adds rules in game (from the Add rule dialog or with `/reclaim add`). 
 owner types `/reload` or logs out, to:
 
 ```
-F:\Blizzard\World of Warcraft\_classic_beta_\WTF\Account\589955#1\SavedVariables\Reclaim.lua
+F:\Blizzard\World of Warcraft\_forever_\WTF\Account\PUPPYSNUFF\SavedVariables\Reclaim-Test.lua
 ```
 
 - `ReclaimDB.rules[itemID]` is the rule, in the same format as `BuiltinRules.lua`. A value of `false`
